@@ -173,14 +173,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
-		</dependency> 
-		
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.0</version>
-			<scope>provieded</scope>
-		</dependency> 
+		</dependency>  
 		
 <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 <dependency>

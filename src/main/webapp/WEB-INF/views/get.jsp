@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style>
+	#page {list-style-type:none; float: left;}
+</style>
 </head>
 <body>
 <div class = "boardInput" id="boardInput">
@@ -26,8 +30,38 @@
 	<input type="button" id='deleteBtn' value="삭제">
 </div>
 
-<script type="text/javascript" src="/resources/js/board.js"></script>
+<div>
+	<div>
+		<i>Reply</i>
+		<button id="addReplyBtn">댓글 등록</button>
+	</div>
+	<div>
+		작성자<input id="replyer" type="text">
+	</div>
+	<div>
+		내용<input id="reply" type="text">
+	</div>
+	<ul class="chat">
+		<li>
+			<div>
+				<strong>주누</strong>
+				<small>ㅎㅇ</small>
+				<small>
+					<a href="#">삭제</a>
+					<a href="#">수정</a>
+				</small>
+			</div>
+		</li>
+	</ul>
+	<div class="pageButton">
+	</div>
+</div>
+
+<script type="text/javascript" src="./resources/js/reply.js"></script>
+<script type="text/javascript" src="./resources/js/board.js"></script>
 <script>
+
+//게시글 이벤트 처리
 var bno = ${bno};
 
 var boardInput = $(".boardInput");
@@ -54,6 +88,125 @@ $("#deleteBtn").on("click", function(e){
 $("#modifyBtn").on("click", function(e){
 	self.location = "/me/modify?bno=" + bno;
 })
+</script>
+
+<script>
+//댓글 이벤트 처리
+
+var inputReply = $("#reply").val();
+var inputReplyer = $("#replyer").val();
+
+$(function(){
+	$("#addReplyBtn").on("click", function(e){
+	
+		var reply = {
+				reply : $("#reply").val(),
+				replyer : $("#replyer").val(),
+				bno : bno
+		}
+		
+		console.log(reply);
+		
+		replyService.add(reply, function(result){
+			alert("댓글 등록했습니다.");
+			
+			showList(1);
+		});
+	});
+	
+	showList(1);
+	
+	var replyUl = $(".chat");
+	
+	function showList(page){
+		console.log("show List " + page);
+		
+		replyService.getList({bno : bno, page : page || 1}, function(replyCnt, list){
+			
+			console.log(replyCnt);
+			console.log(list);
+			
+			var str = "";
+			
+			if(list == null || list.length == 0){
+				replyUl.html("");
+				return;
+			}
+			
+			for(var i=0, len = list.length || 0; i < len; i++){
+				str += "<li data-rno='"+list[i].rno+"'>";
+				str += "<div>작성자 : <strong>"+list[i].replyer+"</strong>";
+				str += " 내용 : <small>"+list[i].reply+"</small><small><a id=modify href=javascript:void(0)> 수정</a><a id=delete href=javascript:void(0) onclick=delete> 삭제</a></small>";
+				str += "</div></li></ul></div>";
+			}
+			
+			replyUl.html(str);
+			
+			showReplyPage(replyCnt);
+			
+		});
+	}
+	
+	var pageNum = 1;
+	var pageButton = $(".pageButton");
+	
+	function showReplyPage(replyCnt){
+		
+		var endNum = Math.ceil(pageNum / 10.0) * 10;
+		var startNum = endNum - 9;
+		
+		var prev = startNum != 1;
+		var next = false;
+		
+		if(endNum * 10 >= replyCnt){
+			endNum = Math.ceil(replyCnt/10.0);
+		}
+		
+		if(endNum * 10 < replyCnt){
+			next = true;
+		}
+		
+		var str = "<ul id=page>";
+		
+		if(prev){
+			str += "<li><a href='"+(startNum -1)+"'>Previous</a></li>";
+		}
+		
+		for(var i = startNum ; i <=endNum; i++){
+
+			str += "<li><a href='"+i+"'>"+i+"</a></li>";
+		}
+		
+		if(next){
+			str += "<li><a href='"+(endNum+1)+"'>Next</a></li>";
+		}
+		str += "</ul></div>";
+		
+		pageButton.html(str);
+	}
+	
+	pageButton.on("click", "li a", function(e){
+		e.preventDefault();
+		
+		console.log("page click");
+		
+		var targetPageNum = $(this).attr("href");
+
+		console.log(targetPageNum);
+		
+		pageNum = targetPageNum;
+		
+		showList(pageNum);
+	});
+	
+	$("#delete").on("click", function(e){
+			console.log(rno);
+		replyService.remove(rno, function(result){
+			alert("글을 삭제했습니다.");
+		});
+	});
+});
+
 </script>
 </body>
 </html>

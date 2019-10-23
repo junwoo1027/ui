@@ -7,15 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.company.domain.Criteria;
-
 @Controller
 public class UiController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(Criteria cri, Model model) {
-		System.out.println(cri.getAmount());
-		System.out.println(cri.getPageNum());
+	public String list() {
 		
 		return "list";
 	}

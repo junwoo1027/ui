@@ -26,7 +26,7 @@
 	<input type="button" id='modifyBtn' value="수정">
 </div>
 
-<script type="text/javascript" src="/resources/js/board.js"></script>
+<script type="text/javascript" src="./resources/js/board.js"></script>
 <script>
 var bno = ${bno};
 

@@ -25,7 +25,7 @@
 	<input type="button" id='cancleBtn' value="취소">
 </div>
 	
-<script type="text/javascript" src="/resources/js/board.js"></script>
+<script type="text/javascript" src="./resources/js/board.js"></script>
 <script>
 var boardInput = $(".boardInput");
 var inputTitle = boardInput.find("input[name='title']");
