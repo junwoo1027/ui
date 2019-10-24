@@ -41,6 +41,9 @@
 	<div>
 		내용<input id="reply" type="text">
 	</div>
+	<div>
+	<input type="text" name="test">
+	</div>
 	<ul class="chat">
 		<li>
 			<div>
@@ -56,7 +59,6 @@
 	<div class="pageButton">
 	</div>
 </div>
-
 <script type="text/javascript" src="./resources/js/reply.js"></script>
 <script type="text/javascript" src="./resources/js/board.js"></script>
 <script>
@@ -134,9 +136,9 @@ $(function(){
 			}
 			
 			for(var i=0, len = list.length || 0; i < len; i++){
-				str += "<li data-rno='"+list[i].rno+"'>";
+				str += "<li>";
 				str += "<div>작성자 : <strong>"+list[i].replyer+"</strong>";
-				str += " 내용 : <small>"+list[i].reply+"</small><small><a id=modify href=javascript:void(0)> 수정</a><a id=delete href=javascript:void(0) onclick=delete> 삭제</a></small>";
+				str += " 내용 : <small class=rep>"+list[i].reply+ "</small><small><a href=javascript:void(0) class=modReply data-rno='"+list[i].rno+"' data-reply="+list[i].reply+" data-replyer='"+list[i].replyer+"'> 수정</a><a href=javascript:void(0) class=delReply data-rno='"+list[i].rno+"'> 삭제</a></small>";
 				str += "</div></li></ul></div>";
 			}
 			
@@ -199,11 +201,43 @@ $(function(){
 		showList(pageNum);
 	});
 	
-	$("#delete").on("click", function(e){
-			console.log(rno);
-		replyService.remove(rno, function(result){
-			alert("글을 삭제했습니다.");
+
+	
+	$(".chat").on("click", '.delReply', function(e){
+		var rno = $(this).data("rno");
+		 console.log(rno);
+		
+		replyService.remove(rno, function(e){
+			alert("댓글을 삭제했습니다.");
+			
+			showList(pageNum);
 		});
+	});	
+	
+	$(".chat").on("click", '.modReply', function(e){
+		
+		var rno = $(this).data("rno");
+		var reply1 = $("input[name='test']");
+		var reply3 = $('.rep');
+		var replyer = $(this).data("replyer");
+		var reply2 = $(this).data("reply"); 
+	
+//		console.log(rno);
+//		console.log(reply2);
+		console.log(reply1);
+		if(reply2 == reply3){
+		console.log(reply3);
+		}
+		
+		var reply = {rno: rno, replyer: replyer, reply: reply1.val()};
+		
+//		console.log(reply);
+		
+//		replyService.update(reply, function(result){
+//			alert("댓글 수정");
+	
+//			showList(pageNum);
+//		});
 	});
 });
 
