@@ -112,7 +112,7 @@ $(function(){
 		replyService.add(reply, function(result){
 			alert("댓글 등록했습니다.");
 			
-			showList(1);
+			showList(pageNum);
 		});
 	});
 	
