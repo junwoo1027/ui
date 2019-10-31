@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UiController {
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list() {
+	@GetMapping("/")
+	public String index() {
+		return "index";
+	}
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public void list() {
 		
-		return "list";
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)

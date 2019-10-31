@@ -10,6 +10,13 @@
 
 <style>
 	#page {list-style-type:none; float: left;}
+	
+	div.replyModal { position:relative; z-index:1; display:none; }
+	div.modalBackground { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 0, 0, 0.8); z-index:-1; }
+	div.modalContent { position:fixed; top:20%; left:calc(50% - 250px); width:500px; height:250px; padding:20px 10px; background:#fff; border:2px solid #666; }
+ 	div.modalContent textarea { font-size:16px; font-family:'맑은 고딕', verdana; padding:10px; width:480px; height:180px; }
+	div.modalContent button { font-size:20px; padding:5px 10px; margin:10px 0; background:#fff; border:1px solid #ccc; }
+ 	div.modalContent button.modal_cancel { margin-left:20px; }
 </style>
 </head>
 <body>
@@ -47,8 +54,8 @@
 	<ul class="chat">
 		<li>
 			<div>
-				<strong>주누</strong>
-				<small>ㅎㅇ</small>
+				<strong></strong>
+				<small></small>
 				<small>
 					<a href="#">삭제</a>
 					<a href="#">수정</a>
@@ -57,6 +64,22 @@
 		</li>
 	</ul>
 	<div class="pageButton">
+	</div>
+	
+	<div class="replyModal">
+	
+		<div class="modalContent">
+			<div>
+				<textarea class="modal_repCon" name="modal_repCon"></textarea>
+			</div>
+			
+			<div>
+				<button type="button" class="modal_modify_btn">수정</button>
+				<button type="button" class="modal_cancle">취소</button>
+			</div>
+		</div>
+		
+		<div class="modalBackground"></div>
 	</div>
 </div>
 <script type="text/javascript" src="./resources/js/reply.js"></script>
@@ -218,27 +241,57 @@ $(function(){
 		
 		var rno = $(this).data("rno");
 		var reply1 = $("input[name='test']");
-		var reply3 = $('.rep');
 		var replyer = $(this).data("replyer");
-		var reply2 = $(this).data("reply"); 
 	
-//		console.log(rno);
-//		console.log(reply2);
-		console.log(reply1);
-		if(reply2 == reply3){
-		console.log(reply3);
-		}
+		console.log("replyer");
 		
 		var reply = {rno: rno, replyer: replyer, reply: reply1.val()};
 		
-//		console.log(reply);
+		console.log(reply);
 		
-//		replyService.update(reply, function(result){
-//			alert("댓글 수정");
+		replyService.update(reply, function(result){
+			alert("댓글 수정");
 	
-//			showList(pageNum);
-//		});
+			showList(pageNum);
+		});
+	}); 
+	
+<%--	var reply = replyUl.find("textarea[name='modal_repCon']");
+	var modal = $('.replyModal');
+	
+	$(".chat").on("click", ".modReply", function(e){
+		var rno = $(this).data("rno");
+		var replyer = $(this).data("replyer");
+		
+		console.log($(this));
+		
+		
+		console.log(rno);
+		console.log(replyer);
+		
+		$(".replyModal").attr("style", "display:block;");
 	});
+	
+	$(".modal_cancle").click(function(){
+		$(".replyModal").attr("style", "display:none;");
+	});
+	
+	
+	$(".modal_modify_btn").on("click", function(e){
+		
+		var reply = {rno: $('.modReply').data("rno"), replyer: $('.modReply').data("replyer"), reply: "zz"};
+		console.log(reply);
+		
+		replyService.update(reply, function(result){
+			alert("댓글 수정");
+			
+			$(".replyModal").attr("style", "display:none;");
+			
+			showList(pageNum);
+		});
+	});--%>
+
+	
 });
 
 </script>
